@@ -19,21 +19,24 @@ export const Home = () => {
     axios
       .all(endpoints.map((endpoint) => axios.get(endpoint)))
       .then((res) => setPokemons(res));
+  };
 
-    // axios
-    //   .get("https://pokeapi.co/api/v2/pokemon?limit=50")
-    //   .then((res) => {
-    //     setPokemons(res.data.results);
-    //     console.log(res.data.results);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error fetching Pokémon data:", error);
-    //   });
+  const pokemonFilter = (name) => {
+    var filteredPokemons = [];
+    if (name === "") {
+      getPokemons();
+    }
+    for (var i in pokemons) {
+      if (pokemons[i].data.name.includes(name)) {
+        filteredPokemons.push(pokemons[i]);
+      }
+    }
+    setPokemons(filteredPokemons);
   };
 
   return (
     <div>
-      <Navbar />
+      <Navbar pokemonFilter={pokemonFilter} />
       <Container maxWidth="false">
         <Grid container spacing={3}>
           {pokemons.map((pokemon, index) => (
@@ -41,19 +44,6 @@ export const Home = () => {
               <PokemonCard pokemon={pokemon} />
             </Grid>
           ))}
-
-          {/* <Grid item size={3}>
-            <PokemonCard />
-          </Grid>
-          <Grid item size={3}>
-            <PokemonCard />
-          </Grid>
-          <Grid item size={3}>
-            <PokemonCard />
-          </Grid>
-          <Grid item size={3}>
-            <PokemonCard />
-          </Grid> */}
         </Grid>
       </Container>
     </div>
