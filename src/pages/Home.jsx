@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import PokemonCard from "../components/PokemonCard";
 import { Container, Grid } from "@mui/material";
 import axios from "axios";
+import { Skeletons } from "../components/Skeletons";
 
 export const Home = () => {
   const [pokemons, setPokemons] = useState([]);
@@ -39,11 +40,15 @@ export const Home = () => {
       <Navbar pokemonFilter={pokemonFilter} />
       <Container maxWidth="false">
         <Grid container spacing={3}>
-          {pokemons.map((pokemon, index) => (
-            <Grid item key={index} size={2}>
-              <PokemonCard pokemon={pokemon} />
-            </Grid>
-          ))}
+          {pokemons.length === 0 ? (
+            <Skeletons />
+          ) : (
+            pokemons.map((pokemon, index) => (
+              <Grid key={index} xs={12} sm={6} md={2}>
+                <PokemonCard pokemon={pokemon} />
+              </Grid>
+            ))
+          )}
         </Grid>
       </Container>
     </div>
