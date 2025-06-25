@@ -5,7 +5,7 @@ import { Container, Grid } from "@mui/material";
 import axios from "axios";
 import { Skeletons } from "../components/Skeletons";
 
-export const Home = () => {
+export const HomePage = () => {
   const [pokemons, setPokemons] = useState([]);
   useEffect(() => {
     getPokemons();
