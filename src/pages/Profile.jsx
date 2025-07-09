@@ -1,8 +1,12 @@
-import React from 'react'
-import Navbar from '../components/Navbar'
+import React from "react";
+import Navbar from "../components/Navbar";
 
-export const ProfilePage = () => {
+export const ProfilePage = ({ pokemonData }) => {
+  console.log(pokemonData);
   return (
-    <>  <Navbar hideSearch/></>
-  )
-}
+    <>
+      {" "}
+      <Navbar hideSearch />
+    </>
+  );
+};

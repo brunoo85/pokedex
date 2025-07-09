@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import PokemonCard from "../components/PokemonCard";
-import { Container, Grid } from "@mui/material";
+import { Box, Container, Grid } from "@mui/material";
 import axios from "axios";
 import { Skeletons } from "../components/Skeletons";
+import { useNavigate } from "react-router-dom";
 
-export const HomePage = () => {
+export const HomePage = ({ setPokemonData }) => {
   const [pokemons, setPokemons] = useState([]);
+  const navigate = useNavigate();
+
   useEffect(() => {
     getPokemons();
   }, []);
@@ -35,6 +38,11 @@ export const HomePage = () => {
     setPokemons(filteredPokemons);
   };
 
+  const pokemonPickHandler = (pokemonData) => {
+    setPokemonData(pokemonData);
+    navigate("/profile");
+  };
+
   return (
     <div>
       <Navbar pokemonFilter={pokemonFilter} />
@@ -45,7 +53,9 @@ export const HomePage = () => {
           ) : (
             pokemons.map((pokemon, index) => (
               <Grid key={index} xs={12} sm={6} md={2}>
-                <PokemonCard pokemon={pokemon} />
+                <Box onClick={() => pokemonPickHandler(pokemon.data)}>
+                  <PokemonCard pokemon={pokemon} />
+                </Box>
               </Grid>
             ))
           )}

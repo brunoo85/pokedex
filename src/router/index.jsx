@@ -1,16 +1,23 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { HomePage } from '../pages/Home'
-import { ProfilePage } from '../pages/Profile'
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { HomePage } from "../pages/Home";
+import { ProfilePage } from "../pages/Profile";
+import { useState } from "react";
 
 export const Router = () => {
-// const pokemonData 
+  const [pokemonData, setPokemonData] = useState([]);
 
   return (
     <BrowserRouter>
-    <Routes>
-    <Route path='/' element={<HomePage/>}/>
-    <Route path='/profile' element={<ProfilePage/>}/>
-     </Routes>
+      <Routes>
+        <Route
+          path="/"
+          element={<HomePage setPokemonData={setPokemonData} />}
+        />
+        <Route
+          path="/profile"
+          element={<ProfilePage pokemonData={pokemonData} />}
+        />
+      </Routes>
     </BrowserRouter>
-  )
-}
+  );
+};
