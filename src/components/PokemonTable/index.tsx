@@ -6,31 +6,26 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { typerHandler } from "../../utis/TypeHandles";
 
 export default function PokemonTable({ pokemonData }) {
+  const { height, weight, types } = pokemonData;
   return (
     <TableContainer component={Paper}>
-      <Table size="small" aria-label="a dense table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Altura</TableCell>
-            <TableCell>Peso</TableCell>
-            <TableCell>Tipo</TableCell>
-          </TableRow>
-        </TableHead>
+      <Table aria-label="a dense table">
         <TableBody>
-          {pokemonData.map((pokemon) => (
-            <TableRow
-              key={pokemon.name}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {pokemon.name}
-              </TableCell>
-              <TableCell align="right">{pokemon.height}</TableCell>
-              <TableCell align="right">{pokemon.weight}</TableCell>
-            </TableRow>
-          ))}
+          <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+            <TableCell>{"Weight"}</TableCell>
+            <TableCell>{weight}</TableCell>
+          </TableRow>
+          <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+            <TableCell>{"Height"}</TableCell>
+            <TableCell>{height}</TableCell>
+          </TableRow>
+          <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+            <TableCell>{"Tipos"}</TableCell>
+            <TableCell>{typerHandler(types)}</TableCell>
+          </TableRow>
         </TableBody>
       </Table>
     </TableContainer>
