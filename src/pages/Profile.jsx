@@ -1,10 +1,10 @@
 import React from "react";
 import Navbar from "../components/Navbar";
-import { Box, Container, Paper, Typography } from "@mui/material";
+import { Box, Chip, Container, Divider, Paper, Typography } from "@mui/material";
 import PokemonTable from "../components/PokemonTable";
 
 export const ProfilePage = ({ pokemonData }) => {
-  const { name, sprites } = pokemonData;
+  const { name, sprites, moves } = pokemonData;
 
   return (
     <>
@@ -21,8 +21,6 @@ export const ProfilePage = ({ pokemonData }) => {
             <Typography variant="h5">{name}</Typography>
             <Box
               display="flex"
-              // justifyContent="center"
-              // alignItems="center"
               width={"100%"}
             >
               <Box
@@ -33,6 +31,34 @@ export const ProfilePage = ({ pokemonData }) => {
               />
               <PokemonTable pokemonData={pokemonData} />
             </Box>
+            <Box width={"100%"}>
+                 <Divider>Variações</Divider>
+                 <Box
+                component="img"
+                src={sprites?.front_female}
+                width="30%"
+                height="30%"
+              />
+                <Box
+                component="img"
+                src={sprites?.front_shiny}
+                width="30%"
+                height="30%"
+              />
+                <Box
+                component="img"
+                src={sprites?.front_shiny_female}
+                width="30%"
+                height="30%"
+              />
+                <Divider>Ataques</Divider>
+
+              {moves.map((moveData) => (
+                <Chip sx={{m:"5px"}} key={moveData.move.name} label={moveData.move.name} />
+              ))}
+
+            </Box>
+
           </Box>
         </Paper>
       </Container>
