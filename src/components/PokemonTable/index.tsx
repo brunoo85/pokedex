@@ -11,17 +11,21 @@ import { typerHandler } from "../../utis/TypeHandles";
 export default function PokemonTable({ pokemonData }) {
   const { height, weight, types } = pokemonData;
   return (
-    <TableContainer component={Paper}>
+    <TableContainer
+      component={Paper}
+      sx={{ height: "fit-content", maxWidth: "250px", boxShadow: "none" }}
+    >
       <Table aria-label="a dense table">
         <TableBody>
           <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-            <TableCell>{"Weight"}</TableCell>
-            <TableCell>{weight}</TableCell>
+            <TableCell>{"Height"}</TableCell>
+            <TableCell>{height + "cm"}</TableCell>
           </TableRow>
           <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-            <TableCell>{"Height"}</TableCell>
-            <TableCell>{height}</TableCell>
+            <TableCell>{"Weight"}</TableCell>
+            <TableCell>{weight + "g"}</TableCell>
           </TableRow>
+
           <TableRow sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
             <TableCell>{"Tipos"}</TableCell>
             <TableCell>{typerHandler(types)}</TableCell>

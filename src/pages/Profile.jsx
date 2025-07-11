@@ -1,10 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { Box, Chip, Container, Divider, Paper, Typography } from "@mui/material";
 import PokemonTable from "../components/PokemonTable";
+import { useNavigate } from "react-router-dom";
 
 export const ProfilePage = ({ pokemonData }) => {
-  const { name, sprites, moves } = pokemonData;
+  const { name, sprites, moves } = pokemonData || {};
+const navigate = useNavigate();
+
+  useEffect(()=> {
+    if(pokemonData === null){
+      navigate("/");
+    }
+  },[])
+
+  
+
 
   return (
     <>
@@ -22,12 +33,15 @@ export const ProfilePage = ({ pokemonData }) => {
             <Box
               display="flex"
               width={"100%"}
+              alignItems={
+                "center"
+              }
             >
               <Box
                 component="img"
                 src={sprites?.front_default}
-                width="100%"
-                height="100%"
+                width="50%"
+                height="50%"
               />
               <PokemonTable pokemonData={pokemonData} />
             </Box>
@@ -52,10 +66,13 @@ export const ProfilePage = ({ pokemonData }) => {
                 height="30%"
               />
                 <Divider>Ataques</Divider>
-
-              {moves.map((moveData) => (
-                <Chip sx={{m:"5px"}} key={moveData.move.name} label={moveData.move.name} />
+                <Box textAlign="center" marginTop="15px">
+              {moves.map((moveData, key) => (
+               
+                <Chip sx={{m:"5px"}} key={key} label={moveData.move.name} />
+              
               ))}
+                </Box>
 
             </Box>
 
