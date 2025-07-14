@@ -11,10 +11,18 @@ export default function PokemonCard({ pokemon }) {
   const { name, sprites, types } = pokemon.data;
 
   return (
-    <Card sx={{ maxWidth: 360, width: 250 }}>
+    <Card
+      sx={{ maxWidth: 360, width: 250 }}
+      style={{
+        boxShadow: "none",
+        border: "1px black solid",
+        borderRadius: "16px",
+      }}
+      className="cardPokemon"
+    >
       <CardMedia
         sx={{ height: 200 }}
-        image={`${sprites.front_default}`}
+        image={`${sprites.other["official-artwork"].front_default}`}
         title="green iguana"
       />
       <CardContent>
@@ -28,7 +36,6 @@ export default function PokemonCard({ pokemon }) {
           </Typography>
         </Box>
       </CardContent>
-      ,
     </Card>
   );
 }

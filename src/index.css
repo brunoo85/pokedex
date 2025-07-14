@@ -9,3 +9,8 @@
   padding: 0px;
   box-sizing: border-box;
 }
+
+.cardPokemon:hover {
+  background-color: grey;
+  cursor: pointer;
+}
