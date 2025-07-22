@@ -10,58 +10,45 @@ export const HomePage = ({ setPokemonData }) => {
   const [pokemons, setPokemons] = useState([]);
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(false);
-    const [hasMore, setHasMore] = useState(true);
+  const [hasMore, setHasMore] = useState(true);
   const navigate = useNavigate();
-
   const lastPokemonRef = useRef();
 
-  // useEffect(() => {
-  //   getPokemons();
-  // }, []);
-
   const getPokemons = useCallback(async () => {
-    if(loading || !hasMore) return;
-
+    if (loading || !hasMore) return;
+    
     setLoading(true);
     var endpoints = [];
-
+    
     for (let i = offset + 1; i <= offset + 50; i++) {
       endpoints.push(`https://pokeapi.co/api/v2/pokemon/${i}`);
     }
-    try{
-      const responses = await axios.all(endpoints.map((endpoint) => axios.get(endpoint)));
-      setPokemons((prev) => [...prev, ...responses]);
-    setOffset((prev) => prev + 50);
 
-    if(offset+50 >= 1000){
-      setHasMore(false);
-    }
-    } catch (err){
+    try {
+      const responses = await axios.all(endpoints.map((endpoint) => axios.get(endpoint)));
+      
+      setPokemons((prev) => [...prev, ...responses]);
+      setOffset((prev) => prev + 50);
+      
+      if (offset + 50 >= 1000) {
+        setHasMore(false);
+      }
+      
+    } catch (err) {
       console.error(err);
     } finally {
       setLoading(false);
     }
-  //   axios
-  //     .all(endpoints.map((endpoint) => axios.get(endpoint)))
-  //     .then((res) => {
-  //       setPokemons((prev) => [...prev, ...res]);
-  //       setOffset((prev) => prev + 50);
-  //       setLoading(false);
-  //     })
-  //     .catch((err) => {
-  //       console.error(err);
-  //       setLoading(false);
-  //     });
   }, [offset, loading, hasMore]);
 
   const pokemonFilter = (name) => {
-    // var filteredPokemons = [];
     if (name === "") {
       setPokemons([]);
       setOffset(0);
       setHasMore(true);
       return;
     }
+    
     var filteredPokemons = [];
     for (var i in pokemons) {
       if (pokemons[i].data.name.toLowerCase().includes(name.toLowerCase())) {
@@ -82,9 +69,7 @@ export const HomePage = ({ setPokemonData }) => {
     }
   }, []);
 
-
-
-useEffect(() => {
+  useEffect(() => {
     if (loading || !hasMore) return;
 
     const observer = new IntersectionObserver(
@@ -120,7 +105,8 @@ useEffect(() => {
             <Skeletons />
           ) : (
             pokemons.map((pokemon, index) => {
-              const isLast = index === pokemon.length-1;
+              const isLast = index === pokemons.length - 1;
+              
               return (
                 <Grid
                   key={`${pokemon.data.id}-${index}`}
@@ -134,7 +120,7 @@ useEffect(() => {
                     <PokemonCard pokemon={pokemon} />
                   </Box>
                 </Grid>
-              )
+              );
             })
           )}
           {loading && <Skeletons />}
