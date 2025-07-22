@@ -10,41 +10,61 @@ export const HomePage = ({ setPokemonData }) => {
   const [pokemons, setPokemons] = useState([]);
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
   const navigate = useNavigate();
-  const observerRef = useRef();
+
   const lastPokemonRef = useRef();
 
-  useEffect(() => {
-    getPokemons();
-  }, []);
+  // useEffect(() => {
+  //   getPokemons();
+  // }, []);
 
-  const getPokemons = useCallback(() => {
+  const getPokemons = useCallback(async () => {
+    if(loading || !hasMore) return;
+
     setLoading(true);
     var endpoints = [];
+
     for (let i = offset + 1; i <= offset + 50; i++) {
       endpoints.push(`https://pokeapi.co/api/v2/pokemon/${i}`);
     }
+    try{
+      const responses = await axios.all(endpoints.map((endpoint) => axios.get(endpoint)));
+      setPokemons((prev) => [...prev, ...responses]);
+    setOffset((prev) => prev + 50);
 
-    axios
-      .all(endpoints.map((endpoint) => axios.get(endpoint)))
-      .then((res) => {
-        setPokemons((prev) => [...prev, ...res]);
-        setOffset((prev) => prev + 50);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        setLoading(false);
-      });
-  }, [offset]);
+    if(offset+50 >= 1000){
+      setHasMore(false);
+    }
+    } catch (err){
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  //   axios
+  //     .all(endpoints.map((endpoint) => axios.get(endpoint)))
+  //     .then((res) => {
+  //       setPokemons((prev) => [...prev, ...res]);
+  //       setOffset((prev) => prev + 50);
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       console.error(err);
+  //       setLoading(false);
+  //     });
+  }, [offset, loading, hasMore]);
 
   const pokemonFilter = (name) => {
-    var filteredPokemons = [];
+    // var filteredPokemons = [];
     if (name === "") {
-      getPokemons();
+      setPokemons([]);
+      setOffset(0);
+      setHasMore(true);
+      return;
     }
+    var filteredPokemons = [];
     for (var i in pokemons) {
-      if (pokemons[i].data.name.includes(name)) {
+      if (pokemons[i].data.name.toLowerCase().includes(name.toLowerCase())) {
         filteredPokemons.push(pokemons[i]);
       }
     }
@@ -57,60 +77,64 @@ export const HomePage = ({ setPokemonData }) => {
   };
 
   useEffect(() => {
-    getPokemons();
-  }, [getPokemons]);
-
-  useEffect(() => {
-    if (loading) return;
-
-    if (observerRef.current) {
-      observerRef.current.disconnect();
+    if (pokemons.length === 0 && offset === 0) {
+      getPokemons();
     }
+  }, []);
 
-    observerRef.current = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        getPokemons();
+
+
+useEffect(() => {
+    if (loading || !hasMore) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !loading) {
+          getPokemons();
+        }
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '100px'
       }
-    });
+    );
 
-    if (lastPokemonRef.current) {
-      observerRef.current.observe(lastPokemonRef.current);
+    const currentLastElement = lastPokemonRef.current;
+    if (currentLastElement) {
+      observer.observe(currentLastElement);
     }
-  }, [loading, getPokemons]);
+
+    return () => {
+      if (currentLastElement) {
+        observer.unobserve(currentLastElement);
+      }
+    };
+  }, [pokemons.length, loading, hasMore, getPokemons]);
 
   return (
     <div>
       <Navbar pokemonFilter={pokemonFilter} />
       <Container maxWidth="false">
-        <Grid container spacing={3} id="teste">
-          {pokemons.length === 0 ? (
+        <Grid container spacing={3} >
+          {pokemons.length === 0 && !loading ? (
             <Skeletons />
           ) : (
             pokemons.map((pokemon, index) => {
-              if (index === pokemon.length - 1) {
-                return (
-                  <Grid
-                    key={index}
-                    item
-                    xs={12}
-                    sm={6}
-                    md={2}
-                    ref={lastPokemonRef}
-                  >
-                    <Box onClick={() => pokemonPickHandler(pokemon.data)}>
-                      <PokemonCard pokemon={pokemon} />
-                    </Box>
-                  </Grid>
-                );
-              } else {
-                return (
-                  <Grid key={index} item xs={12} sm={6} md={2}>
-                    <Box onClick={() => pokemonPickHandler(pokemon.data)}>
-                      <PokemonCard pokemon={pokemon} />
-                    </Box>
-                  </Grid>
-                );
-              }
+              const isLast = index === pokemon.length-1;
+              return (
+                <Grid
+                  key={`${pokemon.data.id}-${index}`}
+                  item
+                  xs={12}
+                  sm={6}
+                  md={2}
+                  ref={isLast ? lastPokemonRef : null}
+                >
+                  <Box onClick={() => pokemonPickHandler(pokemon.data)}>
+                    <PokemonCard pokemon={pokemon} />
+                  </Box>
+                </Grid>
+              )
             })
           )}
           {loading && <Skeletons />}
