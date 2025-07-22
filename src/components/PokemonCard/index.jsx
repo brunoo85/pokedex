@@ -6,16 +6,17 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/material";
 import { typerHandler } from "../../utis/TypeHandles";
+import { getTypeColor } from "../../utis/GetTypeColor";
 
 export default function PokemonCard({ pokemon }) {
   const { name, sprites, types } = pokemon.data;
-
+  const primaryType = types[0]?.type?.name || "normal";
   return (
     <Card
       sx={{ maxWidth: 360, width: 250, position: "relative" }}
       style={{
         boxShadow: "none",
-        border: "1px black solid",
+        border: `1px black solid`,
         borderRadius: "16px",
       }}
       className="cardPokemon"
@@ -27,23 +28,22 @@ export default function PokemonCard({ pokemon }) {
         alignItems="center"
       >
         <Box
-           sx={{
-    display: "block",
-    width: "12%",
-    height: "13%",
-    borderRadius: "58% 42% 64% 36% / 47% 45% 55% 53%",
-    backgroundColor: "#123456",
-    position: "absolute",
-    top: "12%",
-    left: "27%",
-
-  }}
+          sx={{
+            display: "block",
+            width: "50%",
+            height: "45%",
+            borderRadius: "58% 42% 64% 36% / 47% 45% 55% 53%",
+            backgroundColor: getTypeColor(primaryType),
+            // backgroundColor: var(--getTypeColor(types.[0])),
+            position: "absolute",
+            top: "18%",
+            left: "25%",
+          }}
         />
         <CardMedia
           sx={{ height: 150, width: 150, position: "relative" }}
           image={`${sprites.other["official-artwork"].front_default}`}
           title="green iguana"
-     
         />
       </Box>
       <CardContent>
