@@ -16,24 +16,25 @@ export const HomePage = ({ setPokemonData }) => {
 
   const getPokemons = useCallback(async () => {
     if (loading || !hasMore) return;
-    
+
     setLoading(true);
     var endpoints = [];
-    
+
     for (let i = offset + 1; i <= offset + 50; i++) {
       endpoints.push(`https://pokeapi.co/api/v2/pokemon/${i}`);
     }
 
     try {
-      const responses = await axios.all(endpoints.map((endpoint) => axios.get(endpoint)));
-      
+      const responses = await axios.all(
+        endpoints.map((endpoint) => axios.get(endpoint))
+      );
+
       setPokemons((prev) => [...prev, ...responses]);
       setOffset((prev) => prev + 50);
-      
+
       if (offset + 50 >= 1000) {
         setHasMore(false);
       }
-      
     } catch (err) {
       console.error(err);
     } finally {
@@ -48,7 +49,7 @@ export const HomePage = ({ setPokemonData }) => {
       setHasMore(true);
       return;
     }
-    
+
     var filteredPokemons = [];
     for (var i in pokemons) {
       if (pokemons[i].data.name.toLowerCase().includes(name.toLowerCase())) {
@@ -80,7 +81,7 @@ export const HomePage = ({ setPokemonData }) => {
       },
       {
         threshold: 0.1,
-        rootMargin: '100px'
+        rootMargin: "100px",
       }
     );
 
@@ -97,16 +98,16 @@ export const HomePage = ({ setPokemonData }) => {
   }, [pokemons.length, loading, hasMore, getPokemons]);
 
   return (
-    <div>
+    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
       <Navbar pokemonFilter={pokemonFilter} />
       <Container maxWidth="false">
-        <Grid container spacing={3} >
+        <Grid container spacing={3}>
           {pokemons.length === 0 && !loading ? (
             <Skeletons />
           ) : (
             pokemons.map((pokemon, index) => {
               const isLast = index === pokemons.length - 1;
-              
+
               return (
                 <Grid
                   key={`${pokemon.data.id}-${index}`}
