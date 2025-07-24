@@ -11,6 +11,7 @@ export const HomePage = ({ setPokemonData }) => {
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const [initialLoad, setInitialLoad] = useState(false);
   const navigate = useNavigate();
   const lastPokemonRef = useRef();
 
@@ -47,6 +48,7 @@ export const HomePage = ({ setPokemonData }) => {
       setPokemons([]);
       setOffset(0);
       setHasMore(true);
+      setInitialLoad(false);
       return;
     }
 
@@ -65,13 +67,14 @@ export const HomePage = ({ setPokemonData }) => {
   };
 
   useEffect(() => {
-    if (pokemons.length === 0 && offset === 0) {
+    if (!initialLoad && pokemons.length === 0 && offset === 0) {
+      setInitialLoad(true);
       getPokemons();
     }
-  }, []);
+  }, [initialLoad, pokemons.length, offset, getPokemons]);
 
   useEffect(() => {
-    if (loading || !hasMore) return;
+    if (loading || !hasMore || !initialLoad) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
