@@ -104,7 +104,7 @@ export const HomePage = ({ setPokemonData }) => {
     <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
       <Navbar pokemonFilter={pokemonFilter} />
       <Container maxWidth="false">
-        <Grid container spacing={3}>
+        <Grid container spacing={3} sx={{justifyContent: "center"}} style={{display:"flex"}} >
           {pokemons.length === 0 && !loading ? (
             <Skeletons />
           ) : (
