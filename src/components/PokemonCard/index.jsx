@@ -12,7 +12,16 @@ export default function PokemonCard({ pokemon }) {
   const primaryType = types[0]?.type?.name || "normal";
   return (
     <Card
-      sx={{ maxWidth: 360, width: 250, position: "relative" }}
+      sx={{
+        maxWidth: 360,
+        width: 250,
+        position: "relative",
+        cursor: "pointer",
+        transition: "background-color 0.3s ease",
+        "&:hover": {
+          backgroundColor: getTypeColor(primaryType),
+        },
+      }}
       style={{
         boxShadow: "none",
         border: `1px black solid`,
@@ -33,7 +42,6 @@ export default function PokemonCard({ pokemon }) {
             height: "45%",
             borderRadius: "58% 42% 64% 36% / 47% 45% 55% 53%",
             backgroundColor: getTypeColor(primaryType),
-            // backgroundColor: var(--getTypeColor(types.[0])),
             position: "absolute",
             top: "18%",
             left: "25%",
