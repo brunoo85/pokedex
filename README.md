@@ -3,11 +3,11 @@
 Uma aplicação web de Pokédex que permite aos usuários buscar, visualizar e explorar informações sobre os Pokémon de todas as gerações!
 
 ## 👀 Visualização
- <!-- Link da vercel -->
+[Link da vercel](https://pokedex-iota-dun.vercel.app/)
 
 ## 📸 Imagem
 
-![Demonstração da Pokédex](./screenshot.png) <!-- Substitua com a imagem do seu projeto -->
+![Demonstração da Pokédex](./screenshot.png) 
 
 ## 🚀 Tecnologias
 
