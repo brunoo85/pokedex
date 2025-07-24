@@ -3,11 +3,12 @@
 Uma aplicação web de Pokédex que permite aos usuários buscar, visualizar e explorar informações sobre os Pokémon de todas as gerações!
 
 ## 👀 Visualização
+
 [Link da vercel](https://pokedex-iota-dun.vercel.app/)
 
 ## 📸 Imagem
 
-![Demonstração da Pokédex](./screenshot.png) 
+![Demonstração da Pokédex](./public/assets/homePrint.png)
 
 ## 🚀 Tecnologias
 
@@ -15,7 +16,7 @@ Este projeto foi desenvolvido com as seguintes tecnologias:
 
 - [React.js](https://reactjs.org/)
 - [Vite](https://vitejs.dev/)
-- [Material UI](https://mui.com/material-ui/) 
+- [Material UI](https://mui.com/material-ui/)
 - [PokéAPI](https://pokeapi.co/) (API pública de dados dos Pokémon)
 
 ## ⚙️ Funcionalidades
